@@ -9,7 +9,8 @@ class CreateTransactionService {
   }
 
   public execute(): Transaction {
-    // TODO
+    // Para aplicar padroes SOLID
+    // deve-se seguir esse padrão
   }
 }
 
