@@ -14,11 +14,16 @@ class CreateTransactionService {
     this.transactionsRepository = transactionsRepository;
   }
 
-  public execute({ title, type, value }: Request): Transaction {
+  public execute({ title, value, type }: Request): Transaction {
+    // Se o conteudo da array não estiver incluido(includes) in type.
+    if (!['income', 'outcome'].includes(type)) {
+      throw new Error('Transaction type invalid.');
+    }
+
     const { total } = this.transactionsRepository.getBalance();
 
     if (type === 'outcome' && total < value) {
-      throw new Error('Saldo indisponivel');
+      throw new Error('You do not have enough balance.');
     }
 
     const transaction = this.transactionsRepository.create({
@@ -26,7 +31,6 @@ class CreateTransactionService {
       value,
       type,
     });
-
     return transaction;
   }
 }
